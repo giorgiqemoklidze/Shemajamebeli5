@@ -11,7 +11,9 @@ import com.example.shemajamebeli5.databinding.InnrerRecyclerViewBinding
 class RecycerItemsRecyclerAdapter():RecyclerView.Adapter<RecycerItemsRecyclerAdapter.ViewHolder>() {
 
 
-    private var items = mutableListOf<ItemsModel>()
+    private var items = mutableListOf<ItemsModel>(ItemsModel(hint = "blablaba"),
+            ItemsModel(hint = "blablaba"),
+            ItemsModel(hint = "blablaba"))
 
     inner class ViewHolder(private val binding: InnrerRecyclerViewBinding): RecyclerView.ViewHolder(binding.root){
         private lateinit var model: ItemsModel

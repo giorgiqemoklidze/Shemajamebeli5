@@ -52,16 +52,11 @@ class MainFragment : Fragment() {
         binding.FirstRecycler.layoutManager = LinearLayoutManager(requireActivity())
         binding.FirstRecycler.adapter = adapter
 
-        initInnerRecycler()
 
     }
 
 
-    fun initInnerRecycler(){
-        adapterInner = RecycerItemsRecyclerAdapter()
-        bindingInner.InnerRecycler.layoutManager = LinearLayoutManager(requireActivity())
-        bindingInner.InnerRecycler.adapter = adapterInner
-    }
+
 
     private fun observes(){
         viewModel._itemsLiveData.observe(viewLifecycleOwner, Observer {
