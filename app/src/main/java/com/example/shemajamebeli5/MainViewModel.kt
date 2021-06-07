@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
     private val itemsLiveData = MutableLiveData<List<List<ItemsModel>>>().apply {
-        mutableListOf<List<List<ItemsModel>>>()
+        mutableListOf<List<ItemsModel>>()
     }
 
 
@@ -25,16 +25,13 @@ class MainViewModel : ViewModel() {
     private suspend fun  getItems(){
 
         val itemsList = RetrofitService.RetrofitService().getList()
+        d("itemList","${itemsList.body()}")
         if (itemsList.isSuccessful){
-            itemsLiveData.postValue(itemsList.body())
-
-
-
-        }else{
-
-            itemsList.errorBody()
+            val items = itemsList.body()
+            itemsLiveData.postValue(items)
+        }else {
+            itemsList.code()
         }
-
 
 
 

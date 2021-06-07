@@ -3,50 +3,58 @@ package com.example.shemajamebeli5
 
 import android.content.ClipData
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
+import android.util.Log.d
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+
+import android.widget.Toast
+
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.shemajamebeli5.databinding.FirstRecyclerViewBinding
+import com.example.shemajamebeli5.InnerRecyclerAdapter.Companion.savedValue
+
 import com.example.shemajamebeli5.databinding.MainFragmentBinding
 
 
 class MainFragment : Fragment() {
 
-    private lateinit var binding : MainFragmentBinding
 
-    private lateinit var bindingInner : FirstRecyclerViewBinding
+    private lateinit var binding: MainFragmentBinding
 
-    private lateinit var viewModel: MainViewModel
 
-    private lateinit var  adapter : FirstRecylerAdapter
+    private val viewModel: MainViewModel by viewModels()
 
-    private lateinit var  adapterInner : RecycerItemsRecyclerAdapter
+    private lateinit var adapter: FirstRecylerAdapter
 
-    private var cardViewNumber = 2
-   private lateinit var items : List<ItemsModel>
+    private var container = mutableListOf<ItemsModel>()
+
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        bindingInner = FirstRecyclerViewBinding.inflate(layoutInflater,container,false)
-        binding = MainFragmentBinding.inflate(layoutInflater,container,false)
+        binding = MainFragmentBinding.inflate(layoutInflater, container, false)
         init()
         return binding.root
     }
 
 
-    fun init(){
+    fun init() {
+        viewModel.init()
         initRecyclerFirst()
         observes()
+        RegisterBtnListener()
     }
 
 
-    fun initRecyclerFirst(){
+    fun initRecyclerFirst() {
 
         adapter = FirstRecylerAdapter()
         binding.FirstRecycler.layoutManager = LinearLayoutManager(requireActivity())
@@ -56,25 +64,42 @@ class MainFragment : Fragment() {
     }
 
 
-
-
-    private fun observes(){
-        viewModel._itemsLiveData.observe(viewLifecycleOwner, Observer {
-            adapter.getItems(it.size)
-            for (i in 0.. it.size){
-                items = it[i]
+    private fun observes() {
+        viewModel._itemsLiveData.observe(viewLifecycleOwner, Observer { list ->
+            adapter.getItems(list)
+            list.forEach {
+                it.forEach { it1->
+                    container.add(it1)
+                }
             }
-            adapterInner.setData(items.toMutableList())
+
 
         })
-
 
 
     }
 
 
 
+    private fun RegisterBtnListener() {
 
+
+        binding.RegisterBtn.setOnClickListener {
+            container.forEach{
+               if (savedValue.containsKey(it.fieldId)){
+                   if (it.required == "false"){
+
+                   }else{
+                       if (savedValue[it.fieldId] == ""||savedValue[it.fieldId] == null){
+                           Toast.makeText(context, "aucileblad sheavse ${it.hint}", Toast.LENGTH_SHORT).show()
+                       }
+                   }
+               }
+            }
+
+        }
+
+    }
 
 
 }

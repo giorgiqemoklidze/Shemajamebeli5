@@ -6,15 +6,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shemajamebeli5.databinding.FirstRecyclerViewBinding
 
+
 class FirstRecylerAdapter():RecyclerView.Adapter<FirstRecylerAdapter.ViewHolder>() {
 
-    var cardViewNumber = 1
+    private  var itemsList = listOf<List<ItemsModel>>()
+
+
     inner class ViewHolder(private val binding: FirstRecyclerViewBinding): RecyclerView.ViewHolder(binding.root){
 
-        private lateinit var  adapter : RecycerItemsRecyclerAdapter
+        private lateinit var  adapter : InnerRecyclerAdapter
 
         fun bind(){
-            adapter = RecycerItemsRecyclerAdapter()
+            adapter = InnerRecyclerAdapter(itemsList[adapterPosition] as MutableList<ItemsModel>)
             binding.InnerRecycler.layoutManager = LinearLayoutManager(binding.root.context)
             binding.InnerRecycler.adapter = adapter
 
@@ -29,10 +32,11 @@ class FirstRecylerAdapter():RecyclerView.Adapter<FirstRecylerAdapter.ViewHolder>
         holder.bind()
     }
 
-    override fun getItemCount() = cardViewNumber
+    override fun getItemCount() = itemsList.size
 
 
-    fun getItems(cardViewNumberr:Int){
-        cardViewNumber=cardViewNumberr
+    fun getItems(itemsList : List<List<ItemsModel>>){
+        this.itemsList = itemsList
+        notifyDataSetChanged()
     }
 }

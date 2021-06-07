@@ -9,6 +9,8 @@
         android:id="@+id/EditText"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:hint="HOlDER"
+        android:hint="Holder"
+        android:tag="Holder"
+        android:text=""
         />
 </androidx.appcompat.widget.LinearLayoutCompat>
